@@ -19,7 +19,7 @@ $total = $_POST['t_total'];
 require_once dirname(__FILE__) . '/../midtrans/Midtrans.php';
 
 // Set your Merchant Server Key
-Config::$serverKey = 'SB-Mid-server-v3PQ3VtoznMAyIQ_p7MQ5aVo';
+Config::$serverKey = 'SB-Mid-server-8XRCgp30kZZiZUoa_y2vKROq';
 // printExampleWarningMessage();
 
 // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).

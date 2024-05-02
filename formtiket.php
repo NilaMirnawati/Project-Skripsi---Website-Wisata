@@ -198,7 +198,7 @@ $data = mysqli_fetch_assoc($result);
             }
         </script>
         <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-        <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-3bnAG_YN4e76vBHv"></script>
+        <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-KPrhjeMuQtxGFXER"></script>
         <script type="text/javascript">
             document.getElementById('pay-button').onclick = function() {
                 // SnapToken acquired from previous step
