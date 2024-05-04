@@ -60,6 +60,10 @@ $snapToken = '';
 $snapToken = Snap::getSnapToken($params);
 
 // var_dump($nama);
+$sql2 = "UPDATE user SET username = ? WHERE id = ?";
+$stmt2 = $conn->prepare($sql2);
+$stmt2->bind_param("si", $nama, $id_user);
+$stmt2->execute();
 
 $status = 1;
 $sql = "INSERT INTO tiket (id_wisata, id_user, nama_user,nama_wisata, no_telp, tanggal, jumlah, harga, total, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -73,3 +77,5 @@ if ($stmt->execute()) {
     $_SESSION['error'] = 'Tiket Gagal Dibeli';
     header("Location: {$_SERVER['HTTP_REFERER']}");
 }
+
+

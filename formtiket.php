@@ -28,6 +28,11 @@ $sql = "SELECT * FROM wisata where id = $id";
 $result = mysqli_query($conn, $sql);
 $data = mysqli_fetch_assoc($result);
 
+$iduser = $_SESSION['user_id'];
+$sql3 = "SELECT username FROM user where id = $iduser";
+$result3 = mysqli_query($conn, $sql3);
+$user = mysqli_fetch_assoc($result3);
+
 
 ?>
 <!DOCTYPE html>
@@ -59,7 +64,7 @@ $data = mysqli_fetch_assoc($result);
                                         <span class="text-danger font-weight-bold">*</span>
                                     </label>
                                     <input type="hidden" name="id_user" id="" value="<?php echo $_SESSION['user_id'] ?>">
-                                    <input type="text" name="name" id="name" value="<?php echo isset($tiket['nama_user']) ? $tiket['nama_user'] : ''; ?>" class="form-control" require>
+                                    <input type="text" name="name" id="name" value="<?php echo isset($tiket['nama_user']) ?  $tiket['nama_user'] : $user['username']; ?>" class="form-control" require>
                                     <input type="hidden" name="id_tiket" id="id_tiket" value="<?php echo isset($tiket['id']) ? $tiket['id'] : ''; ?>">
                                 </div>
                             </div>

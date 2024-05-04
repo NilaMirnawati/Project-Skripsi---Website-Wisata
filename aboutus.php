@@ -1,3 +1,15 @@
+<?php
+session_start();
+if (isset($_SESSION['sukses'])) {
+  echo "<script>alert('" . $_SESSION['sukses'] . "');</script>";
+  unset($_SESSION['sukses']);
+}
+if (isset($_SESSION['error'])) {
+  echo "<script>alert('" . $_SESSION['error'] . "');</script>";
+  unset($_SESSION['error']);
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,13 +29,25 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav ms-auto py-3">
-              <a class="nav-link px-3" href="index.php">Home</a>
-              <a class="nav-link ps-3" href="wisata.php">Wisata</a>
-              <a class="nav-link ps-3" href="checkcuaca.php">Check Cuaca</a>
-              <a class="nav-link active ps-3" href="aboutus.php">About us</a>
-            </div>
-          </div>
+        <div class="navbar-nav ms-auto py-3">
+          <a class="nav-link px-3" aria-current="page" href="index.php">Home</a>
+          <a class="nav-link ps-3" href="wisata.php">Wisata</a>
+          <a class="nav-link ps-3" href="checkcuaca.php">Check Cuaca</a>
+          <a class="nav-link active ps-3" href="aboutus.php">About us</a>
+          <?php
+          if (isset($_SESSION['loggedin'])) {
+          ?>
+            <a class="nav-link ps-3" href="controller/logout.php">Log Out</a>
+          <?php
+          } else {
+          ?>
+            <a class="nav-link ps-3" href="loginform.php">Login</a>
+          <?php
+          }
+          ?>
+          
+        </div>
+      </div>
         </div>
       </header>  
       <section class="main-biru">

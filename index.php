@@ -16,6 +16,16 @@ $stmt = $conn->prepare($sql);
 $stmt->execute();
 $result = $stmt->get_result();
 
+
+$sql2 = "SELECT * FROM wisata WHERE slider = 1";
+$stmt2 = $conn->prepare($sql2);
+$stmt2->execute();
+$result2 = $stmt2->get_result();
+$slides = [];
+while ($row2 = $result2->fetch_assoc()) {
+  $slides[] = $row2;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -38,9 +48,8 @@ $result = $stmt->get_result();
 
 <body>
   <header class="navbar sticky-top navbar-expand-lg navbar-light shadow-sm main-nav">
-
     <div class="container">
-      <a class="navbar-brand" href="index.html"><img src="assetS/img/logo-1.png" class="main-logo" /></a>
+      <a class="navbar-brand" href="index.php"><img src="assetS/img/logo-1.png" class="main-logo" /></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -49,6 +58,7 @@ $result = $stmt->get_result();
           <a class="nav-link active px-3" aria-current="page" href="index.php">Home</a>
           <a class="nav-link ps-3" href="wisata.php">Wisata</a>
           <a class="nav-link ps-3" href="checkcuaca.php">Check Cuaca</a>
+          <a class="nav-link ps-3" href="aboutus.php">About us</a>
           <?php
           if (isset($_SESSION['loggedin'])) {
           ?>
@@ -60,10 +70,12 @@ $result = $stmt->get_result();
           <?php
           }
           ?>
+          
         </div>
       </div>
     </div>
   </header>
+  
   <div class="container-fluid banner">
     <div class="container banner-content  col-md-6">
       <div class="row justify-content-center fs-5 text-center ">
@@ -92,35 +104,21 @@ $result = $stmt->get_result();
     <div class="container-fluid carousel-contain py-5 main-biru ">
       <div class="container " data-aos="fade-up" data-aos-duration="1500">
         <h2 class="text-center mb-5">TOP DESTINATION</h2>
-        <div id="carouselExampleCaptions" class="carousel slide col-lg-8 offset-lg-2" data-bs-ride="carousel ">
+        <div id="carouselExampleCaptions" class="carousel slide col-lg-8 offset-lg-2" data-bs-ride="carousel">
           <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-
+            <?php foreach ($slides as $index => $slide) : ?>
+              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="<?= $index ?>" class="<?= $index == 0 ? 'active' : '' ?>" aria-current="<?= $index == 0 ? 'true' : '' ?>" aria-label="Slide <?= $index + 1 ?>"></button>
+            <?php endforeach; ?>
           </div>
           <div class="carousel-inner bordered">
-            <div class="carousel-item active">
-              <img src="assets/img/silowo-1.jpg" class="d-block w-100" alt="...">
-              <div class="carousel-caption d-none d-md-block">
-                <a class="nav-link wisata" href="silowo.html">EKOWISATA SILOWO</a>
-
+            <?php foreach ($slides as $index => $slide) : ?>
+              <div class="carousel-item <?= $index == 0 ? 'active' : '' ?>">
+                <img src="image/wisata/<?= $slide['gambar'] ?>" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <a class="nav-link wisata" href="detail.php?id=<?= $slide['id'] ?>"><?= $slide['nama'] ?></a>
+                </div>
               </div>
-            </div>
-            <div class="carousel-item">
-              <img src="assets/img/nglirip-1.jpg" class="d-block w-100" alt="...">
-              <div class="carousel-caption d-none d-md-block">
-                <a class="nav-link wisata" href="nglirip.html">AIR TERJUN NGLIRIP</a>
-
-              </div>
-            </div>
-            <div class="carousel-item">
-              <img src="assets/img/pantaikelapa-1.jpg" class="d-block w-100" alt="...">
-              <div class="carousel-caption d-none d-md-block">
-                <a class="nav-link wisata" href="pantaikelapa.html">PANTAI KELAPA</a>
-
-              </div>
-            </div>
+            <?php endforeach; ?>
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -131,6 +129,8 @@ $result = $stmt->get_result();
             <span class="visually-hidden">Next</span>
           </button>
         </div>
+      </div>
+    </div>
 
   </section>
 
@@ -150,7 +150,7 @@ $result = $stmt->get_result();
                   <div class="card-body">
                     <h5 class="card-title"><?php echo $row['nama'] ?></h5>
                     <p class="card-text"><?php echo $row['deskripsi_singkat'] ?></p>
-                    <a href="pelang.html" class="next">Detail</a>
+                    <a href="detail.php?id=<?php echo $row['id'] ?>" class="next">Detail</a>
                   </div>
                 </div>
               </div>

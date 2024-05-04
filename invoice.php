@@ -40,13 +40,24 @@ if (isset($_GET['id_tiket']) && !empty($_GET['id_tiket'])) {
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav ms-auto py-3">
-                    <a class="nav-link px-3" aria-current="page" href="index.php    ">Home</a>
-                    <a class="nav-link ps-3" href="wisata.html">Wisata</a>
-                    <a class="nav-link ps-3" href="Aartikel.html">Article</a>
-                    <a class="nav-link ps-3" href="LOKASI.html">Location</a>
-                    <a class="nav-link ps-3" href="about us.html">About us</a>
+                    <a class="nav-link px-3" aria-current="page" href="index.php">Home</a>
+                    <a class="nav-link ps-3" href="wisata.php">Wisata</a>
+                    <a class="nav-link ps-3" href="checkcuaca.php">Check Cuaca</a>
+                    <a class="nav-link ps-3" href="aboutus.php">About us</a>
+                    <?php
+                    if (isset($_SESSION['loggedin'])) {
+                    ?>
+                        <a class="nav-link ps-3" href="controller/logout.php">Log Out</a>
+                    <?php
+                    } else {
+                    ?>
+                        <a class="nav-link ps-3" href="loginform.php">Login</a>
+                    <?php
+                    }
+                    ?>
+
                 </div>
-            </div>
+            </div>z
         </div>
     </header>
     <section id="blog">
@@ -54,7 +65,9 @@ if (isset($_GET['id_tiket']) && !empty($_GET['id_tiket'])) {
             <div class="row">
                 <div class="col-lg-9 mb-3 mx-auto">
                     <div class="card border-dark">
-                        <div class="card-header text-center"> <h2>Invoice Pembelian Tiket</h2></div>
+                        <div class="card-header text-center">
+                            <h2>Invoice Pembelian Tiket</h2>
+                        </div>
                         <div class="card-body">
                             <div class="row mt-3">
                                 <div class="col-3">

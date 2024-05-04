@@ -29,6 +29,8 @@ $data = mysqli_fetch_assoc($result);
     <title><?php echo $data['nama'] ?>| Tuban Explore</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 </head>
 
@@ -36,17 +38,30 @@ $data = mysqli_fetch_assoc($result);
     <header class="navbar sticky-top navbar-expand-lg navbar-light shadow-sm main-nav">
 
         <div class="container">
-            <a class="navbar-brand" href="index.html"><img src="assetS/img/logo-1.png" class="main-logo" /></a>
+            <a class="navbar-brand" href="index.php"><img src="assetS/img/logo-1.png" class="main-logo" /></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav ms-auto py-3">
-                    <a class="nav-link px-3" aria-current="page" href="index.php">Home</a>
-                    <a class="nav-link active ps-3" href="wisata.php">Wisata</a>
-                    <a class="nav-link ps-3" href="aboutus.php">About us</a>
-                </div>
-            </div>
+        <div class="navbar-nav ms-auto py-3">
+          <a class="nav-link px-3" aria-current="page" href="index.php">Home</a>
+          <a class="nav-link ps-3" href="wisata.php">Wisata</a>
+          <a class="nav-link ps-3" href="checkcuaca.php">Check Cuaca</a>
+          <a class="nav-link ps-3" href="aboutus.php">About us</a>
+          <?php
+          if (isset($_SESSION['loggedin'])) {
+          ?>
+            <a class="nav-link ps-3" href="controller/logout.php">Log Out</a>
+          <?php
+          } else {
+          ?>
+            <a class="nav-link ps-3" href="loginform.php">Login</a>
+          <?php
+          }
+          ?>
+          
+        </div>
+      </div>
         </div>
     </header>
     <section id="blog">
@@ -64,13 +79,13 @@ $data = mysqli_fetch_assoc($result);
                         <div id="carouselExampleFade" class="carousel slide" data-bs-ride="carousel">
                             <div class="carousel-inner">
                                 <div class="carousel-item active" data-bs-interval="3000">
-                                    <img src="assets/img/pelang-1.jpg" class="w-50 border px-3 py-3 rounded mx-3 my-3 w-100" />
+                                    <img src="image/detail/<?php echo $data['slide1'] ?>" class="w-50 border px-3 py-3 rounded mx-3 my-3 w-100" />
                                 </div>
                                 <div class="carousel-item" data-bs-interval="5000">
-                                    <img src="assets/img/pelang-2.jpg" class="w-50 border px-3 py-3 rounded mx-3 my-3 w-100" />
+                                    <img src="image/detail/<?php echo $data['slide2'] ?>" class="w-50 border px-3 py-3 rounded mx-3 my-3 w-100" />
                                 </div>
                                 <div class="carousel-item" data-bs-interval="5000">
-                                    <img src="assets/img/pelang-3.jpg" class="w-50 border px-3 py-3 rounded mx-3 my-3 w-100" />
+                                    <img src="image/detail/<?php echo $data['slide3'] ?>" class="w-50 border px-3 py-3 rounded mx-3 my-3 w-100" />
                                 </div>
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
@@ -85,12 +100,20 @@ $data = mysqli_fetch_assoc($result);
 
 
                         <p>
-                        <H4> <b><?php echo $data['nama'] ?></b></H4> 
+                        <H4> <b><?php echo $data['nama'] ?></b></H4>
                         <?php echo $data['deskripsi'] ?></p>
                         <h4>Lokasi</h4>
                         <p><?php echo $data['alamat'] ?></p>
-                        <iframe src="<?php echo $data['lokasi'] ?>"
-                             width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <div class="col-auto" style="position: sticky;">
+
+                            <div id="map" style="height: 400px;">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary mt-3">
+                            <a href="https://www.google.com/maps/?q=<?php echo $data['latitude'] ?>,<?php echo $data['longitude'] ?>" target="_blank">Open in Google Maps</a>
+                        </button>
+
+                        <!-- <iframe src="<?php echo $data['lokasi'] ?>" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
 
                         <h4>Jam Operasional</h4>
                         <p> <?php echo $data['hari'] ?>, pukul <?php echo $data['jam_buka'] ?>-<?php echo $data['jam_tutup'] ?> WIB.</p><br>
@@ -99,7 +122,7 @@ $data = mysqli_fetch_assoc($result);
                         <h3>HTM:</h3>
                         <p>Harga tiket <?php echo $data['nama'] ?> adalah Rp. <?php echo number_format($data['htm'], 0, ',', '.') ?> </p>
                         <button type="submit" class="btn btn-main rounded-full px-4">
-                            <a href="formtiket.php?id=<?php echo $data['id']?>" class="fa fa-fw fa-clipboard-list">Beli Tiket</a>
+                            <a href="formtiket.php?id=<?php echo $data['id'] ?>" class="fa fa-fw fa-clipboard-list">Beli Tiket</a>
                         </button>
                     </div>
                 </div>
@@ -134,5 +157,38 @@ $data = mysqli_fetch_assoc($result);
     <script src="assets/js/bundle.min.js"></script>
     <script src="assets/js/jquery-3.6.0.min.js"></script>
 </body>
+<script>
+    // var sda = <?php ?>;
+    var latitude = <?php echo $data['latitude'] ?>;
+    var longitude = <?php echo $data['longitude'] ?>;
+
+    var surabayaCoords = [latitude, longitude]; // Koordinat Surabaya
+    console.log(surabayaCoords);
+
+    var mymap = L.map('map').setView(surabayaCoords, 15); // Set titik tengah dan level zoom
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(mymap);
+
+    // Anda dapat menambahkan marker Surabaya jika diinginkan
+    L.marker(surabayaCoords).addTo(mymap)
+        .bindPopup('Lokasi Wisata')
+        .openPopup();
+    // var marker;
+
+    // mymap.on('click', function(e) {
+    //     if (marker) {
+    //         mymap.removeLayer(marker);
+    //     }
+
+    //     marker = L.marker(e.latlng).addTo(mymap);
+    //     console.log('Koordinat baru:', e.latlng.lat, e.latlng.lng);
+
+    //     // Simpan koordinat ke formulir atau kirim ke server.
+    //     document.getElementById('latitude').value = e.latlng.lat;
+    //     document.getElementById('longitude').value = e.latlng.lng;
+    // });
+</script>
 
 </html>

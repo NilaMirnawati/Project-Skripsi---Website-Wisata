@@ -253,6 +253,15 @@ $result = $stmt->get_result();
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <?php if ($row['slider'] == 1) { ?>
+                                                                <a href="../controller/admin/wisata_slider2.php?id=<?php echo $row['id'] ?>" class="btn btn-warning m-1">
+                                                                    Hapus Dari Halaman Utama
+                                                                </a>
+                                                            <?php } else { ?>
+                                                                <a href="../controller/admin/wisata_slider.php?id=<?php echo $row['id'] ?>" class="btn btn-success m-1">
+                                                                    Tambahkan Ke Halaman Utama
+                                                                </a>
+                                                            <?php } ?>
                                                         </td>
                                                     </tr>
 

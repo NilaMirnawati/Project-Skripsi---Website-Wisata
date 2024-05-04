@@ -2,45 +2,60 @@
 session_start();
 include '../koneksi.php';
 
+// Mengambil data dari POST
 $nama = $_POST['nama'];
 $htm = $_POST['htm'];
 $deskripsi = $_POST['deskripsi'];
 $fasilitas = $_POST['fasilitas'];
 $alamat = $_POST['alamat'];
-$lokasi = $_POST['lokasi'];
 $latitude = $_POST['latitude'];
 $longitude = $_POST['longitude'];
 $jam_buka = $_POST['jam_buka'];
 $jam_tutup = $_POST['jam_tutup'];
 $hari_buka = $_POST['hari'];
 $gambar = $_FILES['image']['name'];
+$slide1 = $_FILES['slide1']['name'];
+$slide2 = $_FILES['slide2']['name'];
+$slide3 = $_FILES['slide3']['name'];
+
+// Menentukan direktori target
 $targetDir = "../../image/wisata/";
-// var_dump($nama, $htm, $deskripsi, $fasilitas, $alamat, $latitude, $longitude, $jam_buka, $jam_tutup, $hari_buka, $gambar)
+$targetDirdet = "../../image/detail/";
 
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     $id = $_GET['id'];
-    if (isset($gambar) && !empty($gambar)) {
-        $sql = "UPDATE wisata SET gambar = '$gambar' WHERE id = $id ";
+    
+    // Persiapkan dan eksekusi statement SQL untuk gambar utama
+    if (!empty($gambar)) {
+        $sql = "UPDATE wisata SET gambar = ? WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $gambar, $id);
         $targetFile = $targetDir . basename($gambar);
-        move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile);
-        $conn->query($sql);
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+            $stmt->execute();
+        }
     }
 
-    $query = "UPDATE wisata SET nama = '$nama', deskripsi = '$deskripsi', alamat = '$alamat',
-      lokasi = '$lokasi', jam_buka = '$jam_buka', jam_tutup = '$jam_tutup', 
-        hari = '$hari_buka', fasilitas = '$fasilitas', htm = '$htm' WHERE id = $id ";
-
-    if ($conn->query($query) === TRUE) {
-        $_SESSION['sukses'] = 'Wisata Berhasil Diubah';
-        // header("Location: {$_SERVER['HTTP_REFERER']}");
-        header('Location: ../../admin/data-wisata.php');
-        exit();
+    // Upload dan update slide images
+    if (!empty($slide1) && move_uploaded_file($_FILES["slide1"]["tmp_name"], $targetDirdet . basename($slide1)) &&
+        !empty($slide2) && move_uploaded_file($_FILES["slide2"]["tmp_name"], $targetDirdet . basename($slide2)) &&
+        !empty($slide3) && move_uploaded_file($_FILES["slide3"]["tmp_name"], $targetDirdet . basename($slide3))) {
+        $query = "UPDATE wisata SET nama = ?, deskripsi = ?, alamat = ?, latitude = ?, longitude = ?, jam_buka = ?, jam_tutup = ?, hari = ?, fasilitas = ?, htm = ?, slide1 = ?, slide2 = ?, slide3 = ? WHERE id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("sssssssssssssi", $nama, $deskripsi, $alamat, $latitude, $longitude, $jam_buka, $jam_tutup, $hari_buka, $fasilitas, $htm, $slide1, $slide2, $slide3, $id);
+        if ($stmt->execute()) {
+            $_SESSION['sukses'] = 'Wisata Berhasil Diubah';
+            header('Location: ../../admin/data-wisata.php');
+            exit();
+        } else {
+            echo "Error updating record: " . $stmt->error;
+        }
     } else {
-        // $_SESSION['error'] = 'Wisata Gagal Diubah';
-        // header("Location: {$_SERVER['HTTP_REFERER']}");
-        echo "Error updating record: " . $conn->error;
+        $_SESSION['error'] = 'Gagal mengunggah gambar';
+        header("Location: {$_SERVER['HTTP_REFERER']}");
     }
 
     // Tutup koneksi database
     $conn->close();
 }
+?>

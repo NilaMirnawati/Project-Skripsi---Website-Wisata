@@ -39,16 +39,28 @@ $result = $stmt->get_result();
   <header class="navbar sticky-top navbar-expand-lg navbar-light shadow-sm main-nav">
 
     <div class="container">
-      <a class="navbar-brand" href="index.html"><img src="assetS/img/logo-1.png" class="main-logo" /></a>
+      <a class="navbar-brand" href="index.php"><img src="assetS/img/logo-1.png" class="main-logo" /></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ms-auto py-3">
-          <a class="nav-link px-3" aria-current="page" href="index.php">Home</a>
-          <a class="nav-link active ps-3" href="wisata.php">Wisata</a>
+          <a class="nav-link active px-3" aria-current="page" href="index.php">Home</a>
+          <a class="nav-link ps-3" href="wisata.php">Wisata</a>
           <a class="nav-link ps-3" href="checkcuaca.php">Check Cuaca</a>
           <a class="nav-link ps-3" href="aboutus.php">About us</a>
+          <?php
+          if (isset($_SESSION['loggedin'])) {
+          ?>
+            <a class="nav-link ps-3" href="controller/logout.php">Log Out</a>
+          <?php
+          } else {
+          ?>
+            <a class="nav-link ps-3" href="loginform.php">Login</a>
+          <?php
+          }
+          ?>
+          
         </div>
       </div>
     </div>
@@ -82,121 +94,11 @@ $result = $stmt->get_result();
           <?php
           }
           ?>
-        
-          <div class="container">
-            <div class="row mt-5 justify-content-center" data-aos="flip-left" data-aos-duration="1500">
-              <div class="col-sm-6 col-md-3 hovered-card">
-                <div class="card shadow-sm w-100">
-                  <img src="assets/img/sendangasmoro-1.jpg" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">SENDANG ASMORO</h5>
-                    <p class="card-text">Sendang Asmoro merupakan sebuah sendang yang hadir dengan air segar yang berwarna kehijauan, Air Sendang berwarna hijau dan tenang, terdapat ikan yang hidup di dalamnya.</p>
-                    <a href="sendangasmoro.html" class="next">Detail</a>
-                  </div>
-                </div>
-              </div>
 
-              <div class="col-md-3 hovered-card">
-                <div class="card shadow-sm w-100">
-                  <img src="assets/img/sunanbonang-1.jpg" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">SUNAN BONANG</h5>
-                    <p class="card-text">Makam Sunan Bonang, Raden Makdum Ibrahim atau Sunan Bonang merupakan salah satu ulama anggota Wali Songo sebagai penebar syiar Islam di Jawa abad ke-14 Masehi.</p>
-                    <a href="sunanbonang.html" class="next">Detail</a>
+        </div>
+      </div>
+    </div>
 
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-3 hovered-card">
-                <div class="card shadow-sm w-100">
-                  <img src="assets/img/goaputriasih-1.jpg" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">GOA PUTRI ASIH</h5>
-                    <p class="card-text">Goa Putri Asih merupakan Goa yang sangat indah sekali dan terletak di tengah hutan jati yang masih alami, Di dalam Gua Putri Asih pengunjung bisa meluhat cave pearl (mutiara gua). </p>
-                    <a href="goaputriasih.html" class="next">Detail</a>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row mt-5 justify-content-center" data-aos="flip-left" data-aos-duration="1500">
-              <div class="col-sm-6 col-md-3 hovered-card mb-3">
-                <div class="card shadow-sm w-100">
-                  <img src="assets/img/pasirputih-1.jpg" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">PANTAI PASIR PUTIH</h5>
-                    <p class="card-text">Pantai Pasir Putih merupakan salah satu wisata pantai yang berada di kota Tuban. Pada kawasan Pantai Pasir Putih juga ditumbuhi oleh rimbunan pepohonan mangrove yang menambah sejuk iklim pada daerah pantai.</p>
-                    <a href="pasirputih.html" class="next">Detail</a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-3 hovered-card">
-                <div class="card shadow-sm w-100">
-                  <img src="assets/img/goangerong-1.jpg" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">GOA NGERONG</h5>
-                    <p class="card-text">Goa Ngerong merupakan Goa yang memiliki keunikan tersendiri yaitu mulut goa yang dipenuhi dengan ribuan kelelawar dan terdapat aliran air yang bersumber dari dalam goa serta terdapat berbagai jenis ikan.</p>
-                    <a href="goangerong.html class=" class="next">Detail</a>
-
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-3 hovered-card">
-                <div class="card shadow-sm w-100">
-                  <img src="assets/img/pantaisemilir-1.png" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">PANTAI SEMILIR</h5>
-                    <p class="card-text">Pantai Semilir merupakan salah satu wisata pantai di Tuban yang menyuguhkan pemandangan yang indah ditambah pasir putih yang membuat pantai ini memanjakan mata para pengunjungnya.</p>
-                    <a href="pantaisemilir.html" class="next">Detail</a>
-
-                  </div>
-                </div>
-              </div>
-              <div class="container">
-                <div class="row mt-5 justify-content-center" data-aos="flip-left" data-aos-duration="1500">
-                  <div class="col-sm-6 col-md-3 hovered-card mb-3">
-                    <div class="card shadow-sm w-100">
-                      <img src="assets/img/tebingpelangi-1.jpeg" class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title">TEBING PELANGI</h5>
-                        <p class="card-text">Tebing Pelangi ini adalah salah satu karya yang sangat luar biasa. Memadukan konsep bekas tambang yang terbengkalai bisa disulapnya menjadi tempat wisata yang layak dikunjungi.</p>
-                        <a href="tebingpelangi.html" class="next">Detail</a>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-3 hovered-card">
-                    <div class="card shadow-sm w-100">
-                      <img src="assets/img/pantaiboom-1.jpg" class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title">PANTAI BOOM</h5>
-                        <p class="card-text">Pantai Boom merupakan pantai yang sedikit berbeda dibandingkan pantai pada umumnya. Pengunjung yang baru memasuki Pantai Boom akan disambut dengan relief-relief yang menceritakan sejarah Tuban.</p>
-                        <a href="pantaiboom.html" class="next">Detail</a>
-
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-3 hovered-card">
-                    <div class="card shadow-sm w-100">
-                      <img src="assets/img/pantaipanduri-1.jpg" class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title">PANTAI PANDURI</h5>
-                        <p class="card-text">Pantai Panduri merupakan pantai yang memiliki daya tarik sendiri dengan pemandangan sunset terbaik di Tuban. Kamu bisa menyaksikan panorama matahari tenggelam tanpa terhalang apapun.</p>
-                        <a href="pantaipanduri.html" class="next">Detail</a>
-
-                      </div>
-                    </div>
-
-                  </div>
-
-
-
-                </div>
-              </div>
   </section>
 
 

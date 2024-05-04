@@ -7,6 +7,21 @@ if (!isset($_SESSION['loggedin'])) {
 if ($_SESSION['role'] == 'mahasiswa') {
     header('Location: ../index.php');
 }
+if (isset($_SESSION['sukses'])) {
+    echo "<script>alert('" . $_SESSION['sukses'] . "');</script>";
+    unset($_SESSION['sukses']);
+}
+if (isset($_SESSION['error'])) {
+    echo "<script>alert('" . $_SESSION['error'] . "');</script>";
+    unset($_SESSION['error']);
+}
+
+include '../controller/koneksi.php';
+$id_user = $_SESSION['user_id'];
+$query =    "SELECT * FROM user
+            where id = $id_user ";
+$result = mysqli_query($conn, $query);
+$data = mysqli_fetch_assoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,7 +117,7 @@ if ($_SESSION['role'] == 'mahasiswa') {
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #1714B6;">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #5C83E8;">
             <!-- Brand Logo -->
             <a href="dashboard.php" class="brand-link">
                 <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -114,36 +129,40 @@ if ($_SESSION['role'] == 'mahasiswa') {
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-
-
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
 
                         <li class="nav-item">
-                            <a href="konfirmasi-pesanan.php" class="nav-link">
-                                <i class="nav-icon fas fa-bell"></i>
+                            <a href="dashboard.php" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
-                                    Konfirmasi Pesanan
-                                    <!-- <span class="right badge badge-danger">New</span> -->
+                                    Dashboard
                                 </p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="pesanan-selesai.php" class="nav-link">
-                                <i class="nav-icon fas fa-check"></i>
+                            <a href="data-wisata.php" class="nav-link">
+                                <i class="nav-icon fas fa-folder"></i>
                                 <p>
-                                    Pesanan Selesai
+                                    Data Wisata
                                 </p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="data-menu.php" class="nav-link">
-                                <i class="nav-icon fas fa-utensils"></i>
+                            <a href="data-tiket.php" class="nav-link">
+                                <i class="nav-icon fas fa-cart-plus"></i>
                                 <p>
-                                    Data Menu
+                                    Data Pembelian Tiket
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="data-user.php" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    Data User
                                 </p>
                             </a>
                         </li>
@@ -198,38 +217,27 @@ if ($_SESSION['role'] == 'mahasiswa') {
                 <div class="col-lg-7 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <form method="post" action="{{ route('profile.store') }} " enctype="multipart/form-data">
-                                @csrf
-                                <div class="text-center">
-                                    <h4 class="card-title">Welcome, {{ Auth::user()->name }}</h4>
-                                    <p class="tx-20 text-muted">Informasi mengenai profil dan preferensi anda di seluruh layanan
-                                        kami</p>
-                                    <div class="profile-pic-div">
-                                        <img id="photoold" class="my-4 rounded-circle wd-150" src="{{ asset('storage/' . Auth::user()->photo) }}" class="img-fluid" alt="profile">
-                                        <input style="display:none" class="form-control" type="file" id="image" name="image">
-                                        <br>
-                                        <label class="btn btn-outline-secondary" id="uploadBtn" class="p-1" for="image">Ganti Gambar</label>
+                        <form method="post" action="../controller/admin/profile_update.php" enctype="multipart/form-data">
+                                    <input type="hidden" name="id" id="" value="<?php echo $data['id'] ?>">
+                                  
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Nama</label>
+                                        <input type="text" class="form-control" id="name" name="name" autocomplete="off" placeholder="Nama" value="<?php echo $data['username'] ?>">
                                     </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">Nama Lengkap</label>
-                                    <input type="text" class="form-control" id="name" name="name" autocomplete="off" placeholder="Nama" value="{{ Auth::user()->name }}">
-                                </div>
-                                <div class="mb-3">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Email</label>
+                                        <input type="text" class="form-control" id="email" name="email" autocomplete="off" placeholder="email" value="<?php echo $data['email'] ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Password</label>
+                                        <input type="text" class="form-control" id="password" name="password" autocomplete="off" placeholder="password" value="" required>
+                                    </div>
 
-                                    <label for="telp" class="form-label">No Telepon</label>
-                                    <input type="text" class="form-control" id="telp" name="telp" value="{{ Auth::user()->phone }}" placeholder="No Telepon">
-
-                                </div>
-                                <div class="mb-3">
-                                    <label for="address" class="form-label">Alamat</label>
-                                    <input type="text" class="form-control" value="{{ Auth::user()->address }}" id="address" name="address" autocomplete="off" placeholder="Alamat">
-                                </div>
-                                <div class="d-flex justify-content-around button">
-                                    <button type="submit" class="btn btn-primary me-2">Submit</button>
-                                    <button class="btn btn-secondary">Cancel</button>
-                                </div>
-                            </form>
+                                    <div class="my-2 d-flex justify-content-around button">
+                                        <button type="submit" value="submit" class="btn-block btn-primary me-2">Simpan</button>
+                                        <!-- <button class="btn btn-secondary">Cancel</button> -->
+                                    </div>
+                                </form>
                         </div>
                     </div>
                 </div>
@@ -305,6 +313,7 @@ if ($_SESSION['role'] == 'mahasiswa') {
             });
         });
     </script>
+    
 </body>
 
 </html>

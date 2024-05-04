@@ -116,7 +116,7 @@ $data = mysqli_fetch_assoc($result);
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #1714B6;">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #5C83E8;">
             <!-- Brand Logo -->
             <a href="dashboard.php" class="brand-link">
                 <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -235,15 +235,15 @@ $data = mysqli_fetch_assoc($result);
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label for="lokasi">Lokasi</label>
-                                                    <input type="text" class="form-control" name="lokasi" id="lokasi" placeholder="Lokasi">
+                                                    <!-- <input type="text" class="form-control" name="lokasi" id="lokasi" placeholder="Lokasi"> -->
 
-                                                    <!-- <div id="map" style="height: 400px;">
+                                                    <div id="map" style="height: 400px;">
                                                     </div>
                                                     <label class="form-label" for="latitude">Latitude:</label>
-                                                    <input class="form-control" type="text" id="latitude" name="latitude" readonly>
+                                                    <input class="form-control" type="text" id="latitude" name="latitude" value="<?php echo $data['latitude'] ?>" readonly>
 
                                                     <label class="form-label" for="longitude">Longitude:</label>
-                                                    <input class="form-control" type="text" id="longitude" name="longitude" readonly> -->
+                                                    <input class="form-control" type="text" id="longitude" name="longitude" value="<?php echo $data['longitude'] ?>" readonly>
                                                     <!-- <textarea class="form-control" name="lokasi" id="lokasi" rows="3" placeholder="Lokasi Wisata"></textarea> -->
                                                 </div>
                                             </div>
@@ -278,6 +278,56 @@ $data = mysqli_fetch_assoc($result);
                                                     <input style="display:none" class="form-control" type="file" id="image" name="image">
                                                     <br>
                                                     <label class="btn btn-outline-secondary" id="uploadBtn" class="p-1" for="image">Ganti Gambar</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-sm-4">
+                                                <div class="form-group form-outline mb-1">
+                                                    <label for="slide1">Gambar Detail</label>
+                                                    <br>
+                                                    <img id="photoold1" class="m-1 img-fluid" src="../image/detail/<?php echo $data['slide1'] ?>" alt="profile" style="width: 200px;">
+                                                    <div class="input-group">
+                                                        <div class="custom-file">
+                                                            <input type="file" class="custom-file-input form-control form-control-lg" id="slide1" name="slide1">
+                                                            <label class="custom-file-label form-label" for="slide1">Pilih file</label>
+                                                        </div>
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">Upload</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group form-outline mb-1">
+                                                    <label for="slide2">Gambar Detail</label>
+                                                    <br>
+                                                    <img id="photoold1" class="m-1 img-fluid" src="../image/detail/<?php echo $data['slide2'] ?>" alt="profile" style="width: 200px;">
+                                                    <div class="input-group">
+                                                        <div class="custom-file">
+                                                            <input type="file" class="custom-file-input form-control form-control-lg" id="slide2" name="slide2">
+                                                            <label class="custom-file-label form-label" for="slide2">Pilih file</label>
+                                                        </div>
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">Upload</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group form-outline mb-1">
+                                                    <label for="slide3">Gambar Detail</label>
+                                                    <br>
+                                                    <img id="photoold1" class="m-1 img-fluid" src="../image/detail/<?php echo $data['slide3'] ?>" alt="profile" style="width: 200px;">
+                                                    <div class="input-group">
+                                                        <div class="custom-file">
+                                                            <input type="file" class="custom-file-input form-control form-control-lg" id="slide3" name="slide3">
+                                                            <label class="custom-file-label form-label" for="slide3">Pilih file</label>
+                                                        </div>
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">Upload</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -404,6 +454,7 @@ $data = mysqli_fetch_assoc($result);
             readURL(this);
         });
     </script>
+    
 </body>
 
 </html>
