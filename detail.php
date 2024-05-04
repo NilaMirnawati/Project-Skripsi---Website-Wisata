@@ -139,7 +139,7 @@ $data = mysqli_fetch_assoc($result);
                 <div class="foto">
                     <img src="assets/img/logo-1.png">
                 </div>
-                <P class="text-center">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates natus ipsa recusandae architecto omnis ipsum ad repellendus tenetur excepturi facere accusantium illum deserunt repellat, expedita voluptas! Voluptatum inventore voluptas aspernatur vel mollitia, qui quia commodi cumque maxime? Quam, aspernatur dolores dolorem, laborum voluptatem quisquam explicabo eligendi quaerat magni, possimus laudantium?</P>
+                <P class="text-center">Tuban Explore adalah website yang menyediakan informasi dan panduan mengenai destinasi wisata di Kabupaten Tuban. website ini menyajikan foto-foto, peta, serta tracking cuaca dan untuk membantu pengguna membeli tiket wisata secara online. Dengan menggunakan website Tuban Explore, pengguna dapat menjelajahi berbagai tujuan wisata, merencanakan itinerary perjalanan, dan memperoleh informasi penting lainnya untuk membuat pengalaman liburan mereka menjadi lebih menyenangkan dan berkesan.</P>
 
                 <a href="#" class="ftr"> <i class="fab fa-facebook-f"></i></a>
                 <a href="#" class="ftr"> <i class="fab fa-twitter"></i></a>
@@ -148,7 +148,7 @@ $data = mysqli_fetch_assoc($result);
         </div>
         </div>
         <div class="container-fluid">
-            <div class="text-center py-5 text-light">Copyright &copy 2022. All right reserved</div>
+            <div class="text-center py-5 text-light">Created by : Tuban Explore</div>
         </div>
     </section>
 

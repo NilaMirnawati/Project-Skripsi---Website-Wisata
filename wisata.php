@@ -45,8 +45,8 @@ $result = $stmt->get_result();
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ms-auto py-3">
-          <a class="nav-link active px-3" aria-current="page" href="index.php">Home</a>
-          <a class="nav-link ps-3" href="wisata.php">Wisata</a>
+          <a class="nav-link px-3" aria-current="page" href="index.php">Home</a>
+          <a class="nav-link active ps-3" href="wisata.php">Wisata</a>
           <a class="nav-link ps-3" href="checkcuaca.php">Check Cuaca</a>
           <a class="nav-link ps-3" href="aboutus.php">About us</a>
           <?php
@@ -113,7 +113,7 @@ $result = $stmt->get_result();
           <img src="assets/img/logo-1.png">
         </div>
 
-        <P class="text-center">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates natus ipsa recusandae architecto omnis ipsum ad repellendus tenetur excepturi facere accusantium illum deserunt repellat, expedita voluptas! Voluptatum inventore voluptas aspernatur vel mollitia, qui quia commodi cumque maxime? Quam, aspernatur dolores dolorem, laborum voluptatem quisquam explicabo eligendi quaerat magni, possimus laudantium?</P>
+        <P class="text-center">Tuban Explore adalah website yang menyediakan informasi dan panduan mengenai destinasi wisata di Kabupaten Tuban. website ini menyajikan foto-foto, peta, serta tracking cuaca dan untuk membantu pengguna membeli tiket wisata secara online. Dengan menggunakan website Tuban Explore, pengguna dapat menjelajahi berbagai tujuan wisata, merencanakan itinerary perjalanan, dan memperoleh informasi penting lainnya untuk membuat pengalaman liburan mereka menjadi lebih menyenangkan dan berkesan.</P>
 
         <a href="#" class="ftr"> <i class="fab fa-facebook-f"></i></a>
         <a href="#" class="ftr"> <i class="fab fa-twitter"></i></a>
@@ -128,7 +128,7 @@ $result = $stmt->get_result();
     </div>
 
     <div class="container-fluid">
-      <div class="text-center py-5 text-light">Copyright &copy 2022. All right reserved</div>
+      <div class="text-center py-5 text-light">Created by : Tuban Explore</div>
     </div>
   </section>
 
