@@ -236,10 +236,10 @@ if (isset($_SESSION['error'])) {
                                                     <div id="map" style="height: 400px;">
                                                     </div>
                                                     <label class="form-label" for="latitude">Latitude:</label>
-                                                    <input class="form-control" type="text" id="latitude" name="latitude" readonly>
+                                                    <input class="form-control" type="text" id="latitude" name="latitude" >
 
                                                     <label class="form-label" for="longitude">Longitude:</label>
-                                                    <input class="form-control" type="text" id="longitude" name="longitude" readonly>
+                                                    <input class="form-control" type="text" id="longitude" name="longitude" >
                                                     <!-- <textarea class="form-control" name="lokasi" id="lokasi" rows="3" placeholder="Lokasi Wisata"></textarea> -->
                                                 </div>
                                             </div>

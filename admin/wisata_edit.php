@@ -240,10 +240,10 @@ $data = mysqli_fetch_assoc($result);
                                                     <div id="map" style="height: 400px;">
                                                     </div>
                                                     <label class="form-label" for="latitude">Latitude:</label>
-                                                    <input class="form-control" type="text" id="latitude" name="latitude" value="<?php echo $data['latitude'] ?>" readonly>
+                                                    <input class="form-control" type="text" id="latitude" name="latitude" value="<?php echo $data['latitude'] ?>" >
 
                                                     <label class="form-label" for="longitude">Longitude:</label>
-                                                    <input class="form-control" type="text" id="longitude" name="longitude" value="<?php echo $data['longitude'] ?>" readonly>
+                                                    <input class="form-control" type="text" id="longitude" name="longitude" value="<?php echo $data['longitude'] ?>" >
                                                     <!-- <textarea class="form-control" name="lokasi" id="lokasi" rows="3" placeholder="Lokasi Wisata"></textarea> -->
                                                 </div>
                                             </div>
