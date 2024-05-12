@@ -1,5 +1,12 @@
 <?php
 session_start();
+if (!isset($_SESSION['loggedin'])) {
+    $_SESSION['error'] = 'Gagal';
+    header('Location: ../loginform.php');
+}
+if ($_SESSION['role'] == 'user') {
+    header('Location: ../index.php');
+}
 if (isset($_SESSION['sukses'])) {
     echo "<script>alert('" . $_SESSION['sukses'] . "');</script>";
     unset($_SESSION['sukses']);
@@ -44,14 +51,21 @@ if (isset($_SESSION['error'])) {
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 </head>
+<style>
+    #pac-input {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        width: 300px;
+        margin-top: 10px;
+    }
+</style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-
-
-        <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
@@ -61,9 +75,7 @@ if (isset($_SESSION['error'])) {
                 </li>
             </ul>
 
-            <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <!-- Navbar Search -->
                 <li class="nav-item">
                     <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                         <i class="fas fa-search"></i>
@@ -85,7 +97,6 @@ if (isset($_SESSION['error'])) {
                     </div>
                 </li>
 
-                <!-- Notifications Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-user"></i> Profile
@@ -103,23 +114,15 @@ if (isset($_SESSION['error'])) {
 
             </ul>
         </nav>
-        <!-- /.navbar -->
 
-        <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #5C83E8;">
-            <!-- Brand Logo -->
             <a href="dashboard.php" class="brand-link">
                 <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">Halaman Admin</span>
             </a>
-
-            <!-- Sidebar -->
             <div class="sidebar">
-
-                <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
                         <li class="nav-item">
                             <a href="dashboard.php" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -128,7 +131,6 @@ if (isset($_SESSION['error'])) {
                                 </p>
                             </a>
                         </li>
-
                         <li class="nav-item">
                             <a href="data-wisata.php" class="nav-link">
                                 <i class="nav-icon fas fa-folder"></i>
@@ -137,7 +139,6 @@ if (isset($_SESSION['error'])) {
                                 </p>
                             </a>
                         </li>
-
                         <li class="nav-item">
                             <a href="data-tiket.php" class="nav-link">
                                 <i class="nav-icon fas fa-cart-plus"></i>
@@ -146,7 +147,6 @@ if (isset($_SESSION['error'])) {
                                 </p>
                             </a>
                         </li>
-
                         <li class="nav-item">
                             <a href="data-user.php" class="nav-link">
                                 <i class="nav-icon fas fa-users"></i>
@@ -155,48 +155,39 @@ if (isset($_SESSION['error'])) {
                                 </p>
                             </a>
                         </li>
-
                     </ul>
                 </nav>
-                <!-- /.sidebar-menu -->
             </div>
-            <!-- /.sidebar -->
         </aside>
 
-        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
                             <h1>Form Wisata</h1>
-
                         </div>
-                    </div><!-- /.container-fluid -->
+                    </div>
             </section>
 
-            <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <!-- general form elements disabled -->
-
                                     <form action="../controller/admin/wisata_create.php" method="post" enctype="multipart/form-data">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="nama">Nama Wisata</label>
-                                                    <input type="text" class="form-control" name="nama" id="nama" placeholder="Nama Wisata">
+                                                    <input type="text" class="form-control" name="nama" id="nama" placeholder="Nama Wisata" required>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="htm">Harga Tiket Wisata</label>
-                                                    <input type="number" class="form-control" name="htm" id="htm" placeholder="Harga Tiket Wisata">
+                                                    <input type="number" class="form-control" name="htm" id="htm" placeholder="Harga Tiket Wisata" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -216,7 +207,7 @@ if (isset($_SESSION['error'])) {
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="fasilitas">Fasilitas</label>
-                                                    <textarea class="form-control" name="fasilitas" id="fasilitas" rows="3" placeholder="Fasilitas Wisata"></textarea>
+                                                    <textarea class="form-control" name="fasilitas" id="fasilitas" rows="3" placeholder="Fasilitas Wisata" required></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -224,23 +215,19 @@ if (isset($_SESSION['error'])) {
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label for="alamat">Alamat Wisata</label>
-                                                    <input type="text" class="form-control" name="alamat" id="alamat" placeholder="Alamat Wisata">
+                                                    <input type="text" class="form-control" name="alamat" id="alamat" placeholder="Alamat Wisata" required>
                                                 </div>
                                             </div>
-                                            <!-- <div class="row"> -->
                                             <div class="col-sm-12">
                                                 <div class="form-group">
+                                                    
                                                     <label for="lokasi">Lokasi</label>
-                                                    <!-- <input type="text" class="form-control" name="lokasi" id="lokasi" placeholder="Lokasi"> -->
+                                                    <input type="hidden" id="place_id" name="place_id">
+                                                    <label for="place_input">Search Location:</label><br>
+                                                    <input class="form-control" id="place_input" type="text" placeholder="Cari Tempat (kosongkan jika tidak perlu)">
 
                                                     <div id="map" style="height: 400px;">
-                                                    </div>
-                                                    <label class="form-label" for="latitude">Latitude:</label>
-                                                    <input class="form-control" type="text" id="latitude" name="latitude" >
-
-                                                    <label class="form-label" for="longitude">Longitude:</label>
-                                                    <input class="form-control" type="text" id="longitude" name="longitude" >
-                                                    <!-- <textarea class="form-control" name="lokasi" id="lokasi" rows="3" placeholder="Lokasi Wisata"></textarea> -->
+                                                    </div>   
                                                 </div>
                                             </div>
                                         </div>
@@ -269,64 +256,31 @@ if (isset($_SESSION['error'])) {
                                         </div>
                                         <div class="row mb-4">
                                             <div class="col-sm-12">
-                                                <div class="form-group form-outline mb-1">
-                                                    <label for="gambar">Gambar</label>
-                                                    <div class="input-group">
-                                                        <div class="custom-file">
-                                                            <input type="file" class="custom-file-input form-control form-control-lg" id="gambar" name="gambar">
-                                                            <label class="custom-file-label form-label" for="gambar">Pilih file</label>
-                                                        </div>
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text">Upload</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <label for="gambar">Gambar</label>
+                                                <input type="file" class="form-control-file " id="gambar" name="gambar">
                                             </div>
                                         </div>
                                         <div class="row mb-4">
                                             <div class="col-sm-4">
-                                                <div class="form-group form-outline mb-1">
-                                                    <label for="slide1">Gambar Detail</label>
-                                                    <div class="input-group">
-                                                        <div class="custom-file">
-                                                            <input type="file" class="custom-file-input form-control form-control-lg" id="slide1" name="slide1">
-                                                            <label class="custom-file-label form-label" for="slide1">Pilih file</label>
-                                                        </div>
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text">Upload</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <label for="slide1">Gambar Detail</label>
+                                                <input type="file" class="form-control-file" id="slide1" name="slide1">
                                             </div>
                                             <div class="col-sm-4">
-                                                <div class="form-group form-outline mb-1">
-                                                    <label for="slide2">Gambar Detail</label>
-                                                    <div class="input-group">
-                                                        <div class="custom-file">
-                                                            <input type="file" class="custom-file-input form-control form-control-lg" id="slide2" name="slide2">
-                                                            <label class="custom-file-label form-label" for="slide2">Pilih file</label>
-                                                        </div>
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text">Upload</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <label for="slide2">Gambar Detail</label>
+                                                <input type="file" class="form-control-file" id="slide2" name="slide2">
                                             </div>
                                             <div class="col-sm-4">
-                                                <div class="form-group form-outline mb-1">
-                                                    <label for="slide3">Gambar Detail</label>
-                                                    <div class="input-group">
-                                                        <div class="custom-file">
-                                                            <input type="file" class="custom-file-input form-control form-control-lg" id="slide3" name="slide3">
-                                                            <label class="custom-file-label form-label" for="slide3">Pilih file</label>
-                                                        </div>
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text">Upload</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <label for="slide3">Gambar Detail</label>
+                                                <input type="file" class="form-control-file" id="slide3" name="slide3">
                                             </div>
                                         </div>
+                                        <!-- <div class="row mb-4">
+                                            <div class="col-sm-12">
+                                                <label for="video">Pilih video (maksimal 100 MB):</label><br>
+                                                <input type="file" id="video" name="vi  deo" accept="video/*" size="104857600" required><br>
+                                                <small>File video harus berformat MP4, MOV, atau format video lainnya.</small><br>
+                                            </div>
+                                        </div> -->
                                         <div class="row">
                                             <div class="col-12 d-flex">
                                                 <button type="submit" class="btn btn-primary w-100"> Simpan Data Wisata</button>
@@ -334,24 +288,14 @@ if (isset($_SESSION['error'])) {
                                         </div>
                                     </form>
                                 </div>
-                                <!-- /.card-body -->
-
                             </div>
-                            <!-- /.card -->
                         </div>
-                        <!-- /.col -->
                     </div>
-                    <!-- /.row -->
                 </div>
-                <!-- /.container-fluid -->
             </section>
-            <!-- /.content -->
         </div>
 
     </div>
-    <!-- ./wrapper -->
-
-    <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -397,34 +341,76 @@ if (isset($_SESSION['error'])) {
     <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+  
     <script>
-        var surabayaCoords = [-6.903477943268576, 112.06260681152345]; // Koordinat Surabaya
-
-        var mymap = L.map('map').setView(surabayaCoords, 10); // Set titik tengah dan level zoom
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(mymap);
-
-        // Anda dapat menambahkan marker Surabaya jika diinginkan
-        // L.marker(surabayaCoords).addTo(mymap)
-        //     .bindPopup('Unesa, Surabaya')
-        //     .openPopup();
+        var map;
+        var placeInput = document.getElementById('place_input');
+        var placeIdInput = document.getElementById('place_id');
         var marker;
 
-        mymap.on('click', function(e) {
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: -6.903477943268576,
+                    lng: 112.06260681152345
+                },
+                zoom: 12 
+            });
+
+            var searchBox = new google.maps.places.SearchBox(placeInput);
+
+            map.addListener('bounds_changed', function() {
+                searchBox.setBounds(map.getBounds());
+            });
+
+            searchBox.addListener('places_changed', function() {
+                var places = searchBox.getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+
+                var place = places[0];
+                placeIdInput.value = place.place_id;
+
+                placeMarker(place.geometry.location);
+            });
+
+            map.addListener('click', function(event) {
+                var geocoder = new google.maps.Geocoder;
+                geocoder.geocode({
+                    'location': event.latLng
+                }, function(results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+                            var placeId = results[0].place_id;
+                            console.log("Place ID:", placeId);
+                            placeIdInput.value = placeId;
+                            placeMarker(event.latLng);
+                        } else {
+                            console.log('No results found');
+                        }
+                    } else {
+                        console.log('Geocoder failed due to: ' + status);
+                    }
+                });
+            });
+        }
+
+        function placeMarker(location) {
             if (marker) {
-                mymap.removeLayer(marker);
+                marker.setMap(null);
             }
 
-            marker = L.marker(e.latlng).addTo(mymap);
-            console.log('Koordinat baru:', e.latlng.lat, e.latlng.lng);
+            marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
 
-            // Simpan koordinat ke formulir atau kirim ke server.
-            document.getElementById('latitude').value = e.latlng.lat;
-            document.getElementById('longitude').value = e.latlng.lng;
-        });
+            map.panTo(location);
+        }
     </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6nI0wmy4zLxm7OT2U4inrqpQAIDDPAn8&libraries=places&callback=initMap"></script>
 </body>
 
 </html>

@@ -29,9 +29,7 @@ $data = mysqli_fetch_assoc($result);
     <title><?php echo $data['nama'] ?>| Tuban Explore</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6nI0wmy4zLxm7OT2U4inrqpQAIDDPAn8"></script>
 </head>
 
 <body>
@@ -43,33 +41,31 @@ $data = mysqli_fetch_assoc($result);
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav ms-auto py-3">
-          <a class="nav-link px-3" aria-current="page" href="index.php">Home</a>
-          <a class="nav-link ps-3" href="wisata.php">Wisata</a>
-          <a class="nav-link ps-3" href="checkcuaca.php">Check Cuaca</a>
-          <a class="nav-link ps-3" href="aboutus.php">About us</a>
-          <?php
-          if (isset($_SESSION['loggedin'])) {
-          ?>
-            <a class="nav-link ps-3" href="controller/logout.php">Log Out</a>
-          <?php
-          } else {
-          ?>
-            <a class="nav-link ps-3" href="loginform.php">Login</a>
-          <?php
-          }
-          ?>
-          
-        </div>
-      </div>
+                <div class="navbar-nav ms-auto py-3">
+                    <a class="nav-link px-3" aria-current="page" href="index.php">Home</a>
+                    <a class="nav-link ps-3" href="wisata.php">Wisata</a>
+                    <a class="nav-link ps-3" href="checkcuaca.php">Check Cuaca</a>
+                    <a class="nav-link ps-3" href="aboutus.php">About us</a>
+                    <?php
+                    if (isset($_SESSION['loggedin'])) {
+                    ?>
+                        <a class="nav-link ps-3" href="controller/logout.php">Log Out</a>
+                    <?php
+                    } else {
+                    ?>
+                        <a class="nav-link ps-3" href="loginform.php">Login</a>
+                    <?php
+                    }
+                    ?>
+
+                </div>
+            </div>
         </div>
     </header>
     <section id="blog">
         <div class="container-fluid py-5">
             <div class="row">
                 <div class="col-lg-8 mb-3 mx-auto">
-
-                    <!--detail tulisan-->
                     <div class="rounded shadow-lg w-100">
                         <div class="px-5 py-5">
                             <h2 tulisan class="text-center main-judul mb-2" data-aos="zoom-out"><?php echo $data['nama'] ?></h2>
@@ -108,13 +104,41 @@ $data = mysqli_fetch_assoc($result);
 
                             <div id="map" style="height: 400px;">
                             </div>
+                            <?php echo $data['place_id'] ?>
+                            <?php
+                            $placeId = $data['place_id'];
+                            $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" . $placeId . "&key=AIzaSyC6nI0wmy4zLxm7OT2U4inrqpQAIDDPAn8";
+                            $response = file_get_contents($apiUrl);
+                            $data2 = json_decode($response, true);
+
+                            if ($data2['status'] == 'OK') {
+                                $latitude = $data2['result']['geometry']['location']['lat'];
+                                $longitude = $data2['result']['geometry']['location']['lng'];
+
+                                echo "<script>
+                                                var map;
+                                                function initMap() {
+                                                    map = new google.maps.Map(document.getElementById('map'), {
+                                                        center: {lat: $latitude, lng: $longitude},
+                                                        zoom: 15
+                                                    });
+                                                    var marker = new google.maps.Marker({
+                                                        position: {lat: $latitude, lng: $longitude},
+                                                        map: map
+                                                    });
+                                                }
+                                                initMap();
+                                            </script>";
+                            ?>
+                                <button class="btn btn-primary mt-3">
+                                    <a href="https://www.google.com/maps/search/?api=1&query=<?php echo $data2['result']['geometry']['location']['lat'] ?>,<?php echo $data2['result']['geometry']['location']['lng'] ?>" target="_blank">Open in Google Maps</a>
+                                </button>
+                            <?php
+                            } else {
+                                echo "<p>Error: Unable to fetch location details.</p>";
+                            }
+                            ?>
                         </div>
-                        <button class="btn btn-primary mt-3">
-                            <a href="https://www.google.com/maps/?q=<?php echo $data['latitude'] ?>,<?php echo $data['longitude'] ?>" target="_blank">Open in Google Maps</a>
-                        </button>
-
-                        <!-- <iframe src="<?php echo $data['lokasi'] ?>" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
-
                         <h4>Jam Operasional</h4>
                         <p> <?php echo $data['hari'] ?>, pukul <?php echo $data['jam_buka'] ?>-<?php echo $data['jam_tutup'] ?> WIB.</p><br>
                         <h4>Fasilitas</h4>
@@ -157,38 +181,5 @@ $data = mysqli_fetch_assoc($result);
     <script src="assets/js/bundle.min.js"></script>
     <script src="assets/js/jquery-3.6.0.min.js"></script>
 </body>
-<script>
-    // var sda = <?php ?>;
-    var latitude = <?php echo $data['latitude'] ?>;
-    var longitude = <?php echo $data['longitude'] ?>;
-
-    var surabayaCoords = [latitude, longitude]; // Koordinat Surabaya
-    console.log(surabayaCoords);
-
-    var mymap = L.map('map').setView(surabayaCoords, 15); // Set titik tengah dan level zoom
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(mymap);
-
-    // Anda dapat menambahkan marker Surabaya jika diinginkan
-    L.marker(surabayaCoords).addTo(mymap)
-        .bindPopup('Lokasi Wisata')
-        .openPopup();
-    // var marker;
-
-    // mymap.on('click', function(e) {
-    //     if (marker) {
-    //         mymap.removeLayer(marker);
-    //     }
-
-    //     marker = L.marker(e.latlng).addTo(mymap);
-    //     console.log('Koordinat baru:', e.latlng.lat, e.latlng.lng);
-
-    //     // Simpan koordinat ke formulir atau kirim ke server.
-    //     document.getElementById('latitude').value = e.latlng.lat;
-    //     document.getElementById('longitude').value = e.latlng.lng;
-    // });
-</script>
 
 </html>

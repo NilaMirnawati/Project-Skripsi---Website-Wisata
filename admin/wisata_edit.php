@@ -1,5 +1,12 @@
 <?php
 session_start();
+if (!isset($_SESSION['loggedin'])) {
+    $_SESSION['error'] = 'Gagal';
+    header('Location: ../loginform.php');
+}
+if ($_SESSION['role'] == 'user') {
+    header('Location: ../index.php');
+}
 if (isset($_SESSION['sukses'])) {
     echo "<script>alert('" . $_SESSION['sukses'] . "');</script>";
     unset($_SESSION['sukses']);
@@ -23,6 +30,7 @@ $data = mysqli_fetch_assoc($result);
 <html lang="en">
 
 <head>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6nI0wmy4zLxm7OT2U4inrqpQAIDDPAn8&libraries=places"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tuban Explore | Data Wisata</title>
@@ -57,11 +65,7 @@ $data = mysqli_fetch_assoc($result);
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-
-
-        <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
@@ -71,9 +75,7 @@ $data = mysqli_fetch_assoc($result);
                 </li>
             </ul>
 
-            <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <!-- Navbar Search -->
                 <li class="nav-item">
                     <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                         <i class="fas fa-search"></i>
@@ -95,7 +97,6 @@ $data = mysqli_fetch_assoc($result);
                     </div>
                 </li>
 
-                <!-- Notifications Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-user"></i> Profile
@@ -113,20 +114,12 @@ $data = mysqli_fetch_assoc($result);
 
             </ul>
         </nav>
-        <!-- /.navbar -->
-
-        <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #5C83E8;">
-            <!-- Brand Logo -->
             <a href="dashboard.php" class="brand-link">
                 <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">Halaman Admin</span>
             </a>
-
-            <!-- Sidebar -->
             <div class="sidebar">
-
-                <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
@@ -168,14 +161,10 @@ $data = mysqli_fetch_assoc($result);
 
                     </ul>
                 </nav>
-                <!-- /.sidebar-menu -->
             </div>
-            <!-- /.sidebar -->
         </aside>
 
-        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
@@ -183,23 +172,21 @@ $data = mysqli_fetch_assoc($result);
                             <h1>Form Wisata</h1>
 
                         </div>
-                    </div><!-- /.container-fluid -->
+                    </div>
             </section>
 
-            <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <!-- general form elements disabled -->
-
                                     <form action="../controller/admin/wisata_edit.php?id=<?php echo $data['id'] ?>" method="post" enctype="multipart/form-data">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="nama">Nama Wisata</label>
+                                                    <input type="hidden" name="id_wisata" id="id_wisata" value="<?php echo $data['id'] ?>">
                                                     <input type="text" class="form-control" name="nama" id="nama" placeholder="Nama Wisata" value="<?php echo $data['nama'] ?>">
                                                 </div>
                                             </div>
@@ -211,10 +198,18 @@ $data = mysqli_fetch_assoc($result);
                                             </div>
                                         </div>
                                         <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="deskripsi">Deskripsi Lengkap</label>
+                                                    <textarea class="form-control" name="deskripsi" id="deskripsi" rows="5" placeholder="Deskripsi Wisata"> <?php echo $data['deskripsi'] ?></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="deskripsi">Deskripsi</label>
-                                                    <textarea class="form-control" name="deskripsi" id="deskripsi" rows="5" placeholder="Deskripsi Wisata"> <?php echo $data['deskripsi'] ?></textarea>
+                                                    <label for="deskripsi_singkat">Deskripsi Singkat</label>
+                                                    <textarea class="form-control" name="deskripsi_singkat" id="deskripsi_singkat" rows="5" placeholder="Deskripsi Wisata"><?php echo $data['deskripsi'] ?></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -235,16 +230,123 @@ $data = mysqli_fetch_assoc($result);
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label for="lokasi">Lokasi</label>
-                                                    <!-- <input type="text" class="form-control" name="lokasi" id="lokasi" placeholder="Lokasi"> -->
 
-                                                    <div id="map" style="height: 400px;">
+                                                    <div class="col-auto" style="position: sticky;">
+                                                        <div id="map" style="height: 400px;"></div>
+                                                        <input type="hidden" name="place_id" id="place_id" value="<?php echo $data['place_id']; ?>">
+                                                        <input type="text" id="place_input" class="form-control mt-2" placeholder="Cari Lokasi (kosongkan jika tidak perlu)" style="width: 80%; box-sizing: border-box;">
+                                                        <?php
+                                                        $placeId = $data['place_id'];
+                                                        $apiKey = "AIzaSyC6nI0wmy4zLxm7OT2U4inrqpQAIDDPAn8";
+                                                        $apiUrl = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" . $placeId . "&key=" . $apiKey;
+                                                        $response = file_get_contents($apiUrl);
+                                                        $data2 = json_decode($response, true);
+
+                                                        if ($data2['status'] == 'OK') {
+                                                            $latitude = $data2['result']['geometry']['location']['lat'];
+                                                            $longitude = $data2['result']['geometry']['location']['lng'];
+
+                                                            echo "<script src='https://maps.googleapis.com/maps/api/js?key=$apiKey&libraries=places'></script>";
+                                                            echo "<script>
+                                                            var map, marker, searchBox;
+
+                                                            function initMap() {
+                                                                var initialPos = {lat: $latitude, lng: $longitude};
+                                                                map = new google.maps.Map(document.getElementById('map'), {
+                                                                    center: initialPos,
+                                                                    zoom: 15
+                                                                });
+
+                                                                marker = new google.maps.Marker({
+                                                                    position: initialPos,
+                                                                    map: map,
+                                                                    draggable: true
+                                                                });
+
+                                                                map.addListener('click', function(e) {
+                                                                    placeMarkerAndPanTo(e.latLng, map);
+                                                                });
+
+                                                                // Setup the search box
+                                                                searchBox = new google.maps.places.SearchBox(document.getElementById('place_input'));
+                                                                map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('place_input'));
+
+                                                                searchBox.addListener('places_changed', function() {
+                                                                    var places = searchBox.getPlaces();
+
+                                                                    if (places.length == 0) {
+                                                                        return;
+                                                                    }
+
+                                                                    // For each place, get the icon, name and location.
+                                                                    places.forEach(function(place) {
+                                                                        if (!place.geometry) {
+                                                                            console.log('Returned place contains no geometry');
+                                                                            return;
+                                                                        }
+
+                                                                        // Clear the existing marker
+                                                                        if (marker) {
+                                                                            marker.setMap(null);
+                                                                        }
+
+                                                                        // Create a new marker at the place location
+                                                                        marker = new google.maps.Marker({
+                                                                            map: map,
+                                                                            title: place.name,
+                                                                            position: place.geometry.location
+                                                                        });
+
+                                                                        // Update the map's viewport
+                                                                        if (place.geometry.viewport) {
+                                                                            map.fitBounds(place.geometry.viewport);
+                                                                        } else {
+                                                                            map.setCenter(place.geometry.location);
+                                                                            map.setZoom(17);
+                                                                        }
+
+                                                                        // Set the place ID to the input field
+                                                                        document.getElementById('place_id').value = place.place_id;
+                                                                    });
+                                                                });
+                                                            }
+
+                                                            function placeMarkerAndPanTo(latLng, map) {
+                                                                if (marker) {
+                                                                    marker.setMap(null);
+                                                                }
+
+                                                                marker = new google.maps.Marker({
+                                                                    position: latLng,
+                                                                    map: map
+                                                                });
+
+                                                                map.panTo(latLng);
+                                                                getPlaceId(latLng);
+                                                            }
+
+                                                            function getPlaceId(latLng) {
+                                                                var geocoder = new google.maps.Geocoder;
+                                                                geocoder.geocode({'location': latLng}, function(results, status) {
+                                                                    if (status === 'OK') {
+                                                                        if (results[0]) {
+                                                                            var place_id = results[0].place_id;
+                                                                            document.getElementById('place_id').value = place_id;
+                                                                        }
+                                                                    } else {
+                                                                        window.alert('Geocoder failed due to: ' + status);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            initMap();
+                                                            </script>";
+                                                        } else {
+                                                            echo "<p>Error: Unable to fetch location details.</p>";
+                                                        }
+                                                        ?>
+                                                        <a class="btn btn-primary mt-3" href="https://www.google.com/maps/search/?api=1&query=<?php echo $latitude; ?>,<?php echo $longitude; ?>" target="_blank">Open in Google Maps</a>
                                                     </div>
-                                                    <label class="form-label" for="latitude">Latitude:</label>
-                                                    <input class="form-control" type="text" id="latitude" name="latitude" value="<?php echo $data['latitude'] ?>" >
-
-                                                    <label class="form-label" for="longitude">Longitude:</label>
-                                                    <input class="form-control" type="text" id="longitude" name="longitude" value="<?php echo $data['longitude'] ?>" >
-                                                    <!-- <textarea class="form-control" name="lokasi" id="lokasi" rows="3" placeholder="Lokasi Wisata"></textarea> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -274,61 +376,37 @@ $data = mysqli_fetch_assoc($result);
                                         <div class="row mb-4">
                                             <div class="col-sm-12">
                                                 <div class="profile-pic-div">
-                                                    <img id="photoold" class="m-1 img-fluid" src="../image/wisata/<?php echo $data['gambar'] ?>" alt="profile" style="width: 200px;">
+                                                    <img id="photoold" class="m-1 img-fluid" src="../image/wisata/<?php echo $data['gambar']; ?>" alt="profile" style="width: 200px;">
                                                     <input style="display:none" class="form-control" type="file" id="image" name="image">
                                                     <br>
-                                                    <label class="btn btn-outline-secondary" id="uploadBtn" class="p-1" for="image">Ganti Gambar</label>
+                                                    <label class="btn btn-outline-secondary" for="image">Ganti Gambar</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row mb-4">
                                             <div class="col-sm-4">
-                                                <div class="form-group form-outline mb-1">
-                                                    <label for="slide1">Gambar Detail</label>
-                                                    <br>
-                                                    <img id="photoold1" class="m-1 img-fluid" src="../image/detail/<?php echo $data['slide1'] ?>" alt="profile" style="width: 200px;">
-                                                    <div class="input-group">
-                                                        <div class="custom-file">
-                                                            <input type="file" class="custom-file-input form-control form-control-lg" id="slide1" name="slide1">
-                                                            <label class="custom-file-label form-label" for="slide1">Pilih file</label>
-                                                        </div>
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text">Upload</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <label for="slide1">Gambar Detail</label>
+                                                <br>
+                                                <img id="photoold1" class="m-1 img-fluid" src="../image/detail/<?php echo $data['slide1']; ?>" alt="profile" style="width: 200px;">
+                                                <input style="display:none" type="file" class="form-control" id="slide1" name="slide1">
+                                                <br>
+                                                <label class="btn btn-outline-secondary" for="slide1">Ganti Gambar</label>
                                             </div>
                                             <div class="col-sm-4">
-                                                <div class="form-group form-outline mb-1">
-                                                    <label for="slide2">Gambar Detail</label>
-                                                    <br>
-                                                    <img id="photoold1" class="m-1 img-fluid" src="../image/detail/<?php echo $data['slide2'] ?>" alt="profile" style="width: 200px;">
-                                                    <div class="input-group">
-                                                        <div class="custom-file">
-                                                            <input type="file" class="custom-file-input form-control form-control-lg" id="slide2" name="slide2">
-                                                            <label class="custom-file-label form-label" for="slide2">Pilih file</label>
-                                                        </div>
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text">Upload</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <label for="slide2">Gambar Detail</label>
+                                                <br>
+                                                <img id="photoold2" class="m-1 img-fluid" src="../image/detail/<?php echo $data['slide2']; ?>" alt="profile" style="width: 200px;">
+                                                <input style="display:none" type="file" class="form-control" id="slide2" name="slide2">
+                                                <br>
+                                                <label class="btn btn-outline-secondary" for="slide2">Ganti Gambar</label>
                                             </div>
                                             <div class="col-sm-4">
-                                                <div class="form-group form-outline mb-1">
-                                                    <label for="slide3">Gambar Detail</label>
-                                                    <br>
-                                                    <img id="photoold1" class="m-1 img-fluid" src="../image/detail/<?php echo $data['slide3'] ?>" alt="profile" style="width: 200px;">
-                                                    <div class="input-group">
-                                                        <div class="custom-file">
-                                                            <input type="file" class="custom-file-input form-control form-control-lg" id="slide3" name="slide3">
-                                                            <label class="custom-file-label form-label" for="slide3">Pilih file</label>
-                                                        </div>
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text">Upload</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <label for="slide3">Gambar Detail</label>
+                                                <br>
+                                                <img id="photoold3" class="m-1 img-fluid" src="../image/detail/<?php echo $data['slide3']; ?>" alt="profile" style="width: 200px;">
+                                                <input style="display:none" type="file" class="form-control" id="slide3" name="slide3">
+                                                <br>
+                                                <label class="btn btn-outline-secondary" for="slide3">Ganti Gambar</label>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -338,22 +416,14 @@ $data = mysqli_fetch_assoc($result);
                                         </div>
                                     </form>
                                 </div>
-                                <!-- /.card-body -->
-
                             </div>
-                            <!-- /.card -->
                         </div>
-                        <!-- /.col -->
                     </div>
-                    <!-- /.row -->
                 </div>
-                <!-- /.container-fluid -->
             </section>
-            <!-- /.content -->
         </div>
 
     </div>
-    <!-- ./wrapper -->
 
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
@@ -401,60 +471,32 @@ $data = mysqli_fetch_assoc($result);
     <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-    <script>
-        // var sda = <?php ?>;
-        var latitude = <?php echo $data['latitude'] ?>;
-        var longitude = <?php echo $data['longitude'] ?>;
-
-        var surabayaCoords = [latitude, longitude]; // Koordinat Surabaya
-        console.log(surabayaCoords);
-
-        var mymap = L.map('map').setView(surabayaCoords, 15); // Set titik tengah dan level zoom
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(mymap);
-
-        // Anda dapat menambahkan marker Surabaya jika diinginkan
-        L.marker(surabayaCoords).addTo(mymap)
-            .bindPopup('Lokasi Wisata')
-            .openPopup();
-        // var marker;
-
-        var marker;
-
-        mymap.on('click', function(e) {
-            if (marker) {
-                mymap.removeLayer(marker);
-            }
-
-            marker = L.marker(e.latlng).addTo(mymap);
-            console.log('Koordinat baru:', e.latlng.lat, e.latlng.lng);
-
-            // Simpan koordinat ke formulir atau kirim ke server.
-            document.getElementById('latitude').value = e.latlng.lat;
-            document.getElementById('longitude').value = e.latlng.lng;
-        });
-    </script>
+ 
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script>
-        function readURL(input) {
+        function updateImagePreview(input, imgElementId) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-
                 reader.onload = function(e) {
-                    $('#photoold').attr('src', e.target.result);
-                }
-
+                    $(imgElementId).attr('src', e.target.result);
+                };
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
         $("#image").change(function() {
-            readURL(this);
+            updateImagePreview(this, '#photoold');
+        });
+        $("#slide1").change(function() {
+            updateImagePreview(this, '#photoold1');
+        });
+        $("#slide2").change(function() {
+            updateImagePreview(this, '#photoold2');
+        });
+        $("#slide3").change(function() {
+            updateImagePreview(this, '#photoold3');
         });
     </script>
-    
 </body>
 
 </html>

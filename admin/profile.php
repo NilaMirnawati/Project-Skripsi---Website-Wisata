@@ -2,9 +2,9 @@
 session_start();
 if (!isset($_SESSION['loggedin'])) {
     $_SESSION['error'] = 'Gagal';
-    header('Location: ../login.php');
+    header('Location: ../loginform.php');
 }
-if ($_SESSION['role'] == 'mahasiswa') {
+if ($_SESSION['role'] == 'user') {
     header('Location: ../index.php');
 }
 if (isset($_SESSION['sukses'])) {
@@ -29,7 +29,8 @@ $data = mysqli_fetch_assoc($result);
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Foodcourt | Dashboard</title>
+    <title>Tuban Explore | Profile</title>
+
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -114,20 +115,12 @@ $data = mysqli_fetch_assoc($result);
 
             </ul>
         </nav>
-        <!-- /.navbar -->
-
-        <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #5C83E8;">
-            <!-- Brand Logo -->
             <a href="dashboard.php" class="brand-link">
                 <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">Halaman Admin</span>
             </a>
-
-            <!-- Sidebar -->
             <div class="sidebar">
-
-                <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
@@ -169,26 +162,20 @@ $data = mysqli_fetch_assoc($result);
 
                     </ul>
                 </nav>
-                <!-- /.sidebar-menu -->
             </div>
-            <!-- /.sidebar -->
         </aside>
 
-        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-12">
                             <h1 class="m-0">Pesanan Selesai</h1>
                             <p>Data pesanan yang telah diterima customer</p>
-                        </div><!-- /.col -->
-
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- /.content-header -->
             <div class="row">
                 <div class="col-lg-3 offset-lg-1 grid-margin">
                     <div class="card">
@@ -217,27 +204,26 @@ $data = mysqli_fetch_assoc($result);
                 <div class="col-lg-7 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                        <form method="post" action="../controller/admin/profile_update.php" enctype="multipart/form-data">
-                                    <input type="hidden" name="id" id="" value="<?php echo $data['id'] ?>">
-                                  
-                                    <div class="mb-3">
-                                        <label for="name" class="form-label">Nama</label>
-                                        <input type="text" class="form-control" id="name" name="name" autocomplete="off" placeholder="Nama" value="<?php echo $data['username'] ?>">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="name" class="form-label">Email</label>
-                                        <input type="text" class="form-control" id="email" name="email" autocomplete="off" placeholder="email" value="<?php echo $data['email'] ?>">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="name" class="form-label">Password</label>
-                                        <input type="text" class="form-control" id="password" name="password" autocomplete="off" placeholder="password" value="" required>
-                                    </div>
+                            <form method="post" action="../controller/admin/profile_update.php" enctype="multipart/form-data">
+                                <input type="hidden" name="id" id="" value="<?php echo $data['id'] ?>">
 
-                                    <div class="my-2 d-flex justify-content-around button">
-                                        <button type="submit" value="submit" class="btn-block btn-primary me-2">Simpan</button>
-                                        <!-- <button class="btn btn-secondary">Cancel</button> -->
-                                    </div>
-                                </form>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Nama</label>
+                                    <input type="text" class="form-control" id="name" name="name" autocomplete="off" placeholder="Nama" value="<?php echo $data['username'] ?>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Email</label>
+                                    <input type="text" class="form-control" id="email" name="email" autocomplete="off" placeholder="email" value="<?php echo $data['email'] ?>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Password</label>
+                                    <input type="text" class="form-control" id="password" name="password" autocomplete="off" placeholder="password" value="" required>
+                                </div>
+
+                                <div class="my-2 d-flex justify-content-around button">
+                                    <button type="submit" value="submit" class="btn-block btn-primary me-2">Simpan</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -313,7 +299,7 @@ $data = mysqli_fetch_assoc($result);
             });
         });
     </script>
-    
+
 </body>
 
 </html>

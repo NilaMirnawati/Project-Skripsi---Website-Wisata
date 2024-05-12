@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps Search and Click Event</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Google Maps Search and Click Event</h1>
+    <input id="pac-input" type="text" placeholder="Search Box">
+    <div id="map"></div>
+    
+    <script>
+        var map;
+        var marker;
+
+        // Fungsi untuk inisialisasi peta
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: -6.2088, lng: 106.8456}, // Koordinat Jakarta, bisa diganti sesuai kebutuhan
+                zoom: 8 // Tingkat zoom awal
+            });
+
+            // Membuat search box
+            var input = document.getElementById('pac-input');
+            var searchBox = new google.maps.places.SearchBox(input);
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+            // Event listener untuk saat pencarian dilakukan
+            searchBox.addListener('places_changed', function() {
+                var places = searchBox.getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+
+                // Memperbarui peta dengan hasil pencarian
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function(place) {
+                    if (!place.geometry) {
+                        console.log("Returned place contains no geometry");
+                        return;
+                    }
+
+                    if (place.geometry.viewport) {
+                        // Hanya jika ada viewport, gunakan
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
+
+                // Menampilkan nilai latitude dan longitude ke konsol
+                console.log("Latitude:", places[0].geometry.location.lat());
+                console.log("Longitude:", places[0].geometry.location.lng());
+            });
+
+            // Menambahkan event listener ketika peta diklik
+            map.addListener('click', function(event) {
+                placeMarker(event.latLng); // Memanggil fungsi placeMarker dengan koordinat yang diklik
+            });
+        }
+
+        // Fungsi untuk menempatkan marker di peta
+        function placeMarker(location) {
+            // Hapus marker sebelumnya, jika ada
+            if (marker) {
+                marker.setMap(null);
+            }
+
+            marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+
+            // Menampilkan koordinat ketika marker diklik
+            marker.addListener('click', function() {
+                alert('Latitude: ' + location.lat() + '\nLongitude: ' + location.lng());
+            });
+
+            // Menampilkan nilai latitude dan longitude ke konsol
+            console.log("Latitude:", location.lat());
+            console.log("Longitude:", location.lng());
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6nI0wmy4zLxm7OT2U4inrqpQAIDDPAn8&libraries=places&callback=initMap"></script>
+    <!-- Ganti YOUR_API_KEY dengan kunci API Google Maps Anda -->
+</body>
+</html>

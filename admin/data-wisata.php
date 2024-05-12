@@ -1,5 +1,12 @@
 <?php
 session_start();
+if (!isset($_SESSION['loggedin'])) {
+    $_SESSION['error'] = 'Gagal';
+    header('Location: ../loginform.php');
+}
+if ($_SESSION['role'] == 'user') {
+    header('Location: ../index.php');
+}
 if (isset($_SESSION['sukses'])) {
     echo "<script>alert('" . $_SESSION['sukses'] . "');</script>";
     unset($_SESSION['sukses']);
@@ -193,10 +200,6 @@ $result = $stmt->get_result();
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <!-- <div class="card-header">
-                                    <h3 class="card-title">DataTable with default features</h3>
-                                </div> -->
-                                <!-- /.card-header -->
                                 <div class="card-body">
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
@@ -253,7 +256,7 @@ $result = $stmt->get_result();
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <?php if ($row['slider'] == 1) { ?>
+                                                            <!-- <?php if ($row['slider'] == 1) { ?>
                                                                 <a href="../controller/admin/wisata_slider2.php?id=<?php echo $row['id'] ?>" class="btn btn-warning m-1">
                                                                     Hapus Dari Halaman Utama
                                                                 </a>
@@ -261,7 +264,7 @@ $result = $stmt->get_result();
                                                                 <a href="../controller/admin/wisata_slider.php?id=<?php echo $row['id'] ?>" class="btn btn-success m-1">
                                                                     Tambahkan Ke Halaman Utama
                                                                 </a>
-                                                            <?php } ?>
+                                                            <?php } ?> -->
                                                         </td>
                                                     </tr>
 
@@ -276,23 +279,14 @@ $result = $stmt->get_result();
                                             <?php
                                             }
                                             ?>
-
-
                                         </tbody>
-
                                     </table>
                                 </div>
-                                <!-- /.card-body -->
                             </div>
-                            <!-- /.card -->
                         </div>
-                        <!-- /.col -->
                     </div>
-                    <!-- /.row -->
                 </div>
-                <!-- /.container-fluid -->
             </section>
-            <!-- /.content -->
         </div>
 
     </div>

@@ -2,13 +2,13 @@
 session_start();
 if (!isset($_SESSION['loggedin'])) {
     $_SESSION['error'] = 'Gagal';
-    header('Location: ../login.php');
+    header('Location: ../loginform.php');
 }
 if ($_SESSION['role'] == 'user') {
     header('Location: ../index.php');
 }
 if (isset($_SESSION['sukses'])) {
-    echo "<script>alert('" . $_SESSION['sukses'] . "');</script>"; // Menampilkan alert jika ada sukses
+    echo "<script>alert('" . $_SESSION['sukses'] . "');</script>"; 
     unset($_SESSION['sukses']);
 }
 if (isset($_SESSION['error'])) {
@@ -58,11 +58,7 @@ $result = $stmt->get_result();
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-
-
-        <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
@@ -71,10 +67,7 @@ $result = $stmt->get_result();
                     <a href="dashboard.php" class="nav-link">Dashboard</a>
                 </li>
             </ul>
-
-            <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <!-- Navbar Search -->
                 <li class="nav-item">
                     <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                         <i class="fas fa-search"></i>
@@ -96,7 +89,6 @@ $result = $stmt->get_result();
                     </div>
                 </li>
 
-                <!-- Notifications Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-user"></i> Profile
@@ -114,20 +106,13 @@ $result = $stmt->get_result();
 
             </ul>
         </nav>
-        <!-- /.navbar -->
 
-        <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #5C83E8;">
-            <!-- Brand Logo -->
             <a href="dashboard.php" class="brand-link">
                 <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">Halaman Admin</span>
             </a>
-
-            <!-- Sidebar -->
             <div class="sidebar">
-
-                <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
@@ -166,17 +151,12 @@ $result = $stmt->get_result();
                                 </p>
                             </a>
                         </li>
-
                     </ul>
                 </nav>
-                <!-- /.sidebar-menu -->
             </div>
-            <!-- /.sidebar -->
         </aside>
 
-        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
@@ -216,7 +196,6 @@ $result = $stmt->get_result();
                                                         <option value="user">User</option>
                                                         <option value="admin">Admin</option>
                                                     </select>
-                                                    <!-- <input type="text" id="level" name="level" class="form-control form-control-lg" /> -->
                                                 </div>
 
                                                 <div class="pt-1 mb-4">
@@ -227,21 +206,12 @@ $result = $stmt->get_result();
                                             </form>
                                         </div>
                                     </div>
-                                    <!-- /.modal-content -->
                                 </div>
                             </div>
-
-                            <!-- <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">DataTables</li>
-                            </ol>
-                        </div> -->
                         </div>
-                    </div><!-- /.container-fluid -->
+                    </div>
             </section>
 
-            <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -323,7 +293,6 @@ $result = $stmt->get_result();
                                                                             </form>
                                                                         </div>
                                                                     </div>
-                                                                    <!-- /.modal-content -->
                                                                 </div>
                                                             </div>
                                                             <div class='modal fade' id='modal-hapus<?php echo $row['id'] ?>'>
@@ -360,17 +329,11 @@ $result = $stmt->get_result();
 
                                     </table>
                                 </div>
-                                <!-- /.card-body -->
                             </div>
-                            <!-- /.card -->
                         </div>
-                        <!-- /.col -->
                     </div>
-                    <!-- /.row -->
                 </div>
-                <!-- /.container-fluid -->
             </section>
-            <!-- /.content -->
         </div>
 
     </div>

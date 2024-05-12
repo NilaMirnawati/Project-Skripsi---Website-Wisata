@@ -70,12 +70,12 @@ while ($row2 = $result2->fetch_assoc()) {
           <?php
           }
           ?>
-          
+
         </div>
       </div>
     </div>
   </header>
-  
+
   <div class="container-fluid banner">
     <div class="container banner-content  col-md-6">
       <div class="row justify-content-center fs-5 text-center ">
@@ -100,7 +100,7 @@ while ($row2 = $result2->fetch_assoc()) {
   </div>
 
 
-  <section>
+  <!-- <section>
     <div class="container-fluid carousel-contain py-5 main-biru ">
       <div class="container " data-aos="fade-up" data-aos-duration="1500">
         <h2 class="text-center mb-5">TOP DESTINATION</h2>
@@ -132,7 +132,7 @@ while ($row2 = $result2->fetch_assoc()) {
       </div>
     </div>
 
-  </section>
+  </section> -->
 
   <section id="populer">
     <div class="container-fluid py-5 ">
@@ -165,39 +165,27 @@ while ($row2 = $result2->fetch_assoc()) {
           <div class="mt-5 d-flex justify-content-center">
             <a href="wisata.php" class="next">NEXT &raquo;</a>
           </div>
-
-
           <section class="footer" data-aos="fade-up" data-aos-duration="1000">
-
             <div class="container">
-
               <div class="share">
-
-
                 <div class="foto">
                   <img src="assets/img/logo-1.png">
                 </div>
-
-                <P class="text-center">Tuban Explore adalah website yang menyediakan informasi dan panduan mengenai destinasi wisata di Kabupaten Tuban. website ini menyajikan foto-foto, peta, serta tracking cuaca dan untuk membantu pengguna membeli tiket wisata secara online. Dengan menggunakan website Tuban Explore, pengguna dapat menjelajahi berbagai tujuan wisata, merencanakan itinerary perjalanan, dan memperoleh informasi penting lainnya untuk membuat pengalaman liburan mereka menjadi lebih menyenangkan dan berkesan.</P>
-
+                <P class="text-center">Tuban Explore adalah website yang menyediakan informasi dan panduan mengenai destinasi wisata di Kabupaten Tuban.
+                  website ini menyajikan foto-foto, peta, serta tracking cuaca dan untuk membantu pengguna membeli tiket wisata secara online.
+                  Dengan menggunakan website Tuban Explore, pengguna dapat menjelajahi berbagai tujuan wisata, merencanakan itinerary perjalanan,
+                  dan memperoleh informasi penting lainnya untuk membuat pengalaman liburan mereka menjadi lebih menyenangkan dan berkesan.</P>
                 <a href="#" class="ftr"> <i class="fab fa-facebook-f"></i></a>
                 <a href="#" class="ftr"> <i class="fab fa-twitter"></i></a>
                 <a href="#" class="ftr"><i class="fab fa-instagram"></i></a>
-
               </div>
-
-
             </div>
-
         </div>
       </div>
-
       <div class="container-fluid">
         <div class="text-center py-5 text-light">Created by : Tuban Explore</div>
       </div>
   </section>
-
-
   <script src="assets/js/bundle.min.js"></script>
   <scrip src="assets/js/jquery-3.6.0.min.js"></scrip>
   <script src="assets/js/aos.js"></script>

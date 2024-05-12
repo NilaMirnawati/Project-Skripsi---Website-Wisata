@@ -37,7 +37,7 @@ if (isset($_SESSION['error'])) {
         <form action="controller/login.php" method="post">
           <input type="text" placeholder="Enter your email" name="email">
           <input type="password" placeholder="Enter your password" name="password">
-          <a href="#">Forgot password?</a>
+          <!-- <a href="#">Forgot password?</a> -->
           <input type="submit" class="button" value="submit">
         </form>
         <div class="signup">
