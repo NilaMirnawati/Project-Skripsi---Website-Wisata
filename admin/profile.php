@@ -170,8 +170,7 @@ $data = mysqli_fetch_assoc($result);
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-12">
-                            <h1 class="m-0">Pesanan Selesai</h1>
-                            <p>Data pesanan yang telah diterima customer</p>
+                            <h1 class="m-0">Profile</h1>
                         </div>
                     </div>
                 </div>
